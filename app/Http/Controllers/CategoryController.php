@@ -32,7 +32,7 @@ class CategoryController extends Controller
     {
         $category = Category::create($request->all());
 
-        return response()->json(["data" => $category]);
+        return response()->json(["data" => $category], Response::HTTP_CREATED);
     }
 
     /**
@@ -43,7 +43,7 @@ class CategoryController extends Controller
         $category = Category::find($id);
 
         if (is_null($category)) {
-            return response()->json(["error" => "Category not found"], Response::HTTP_NOT_FOUND);
+            return response()->json(["error" => "Category not found!"], Response::HTTP_NOT_FOUND);
         }
 
         return response()->json(["data" => $category]);
@@ -60,7 +60,7 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
+    public function destroy(string $id)
     {
         Category::destroy($id);
 
