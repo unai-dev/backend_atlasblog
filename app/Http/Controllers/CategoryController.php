@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -30,9 +31,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = Category::create($request->all());
+        try {
+            $validated = $request->validate([
+                "name" => "required|string|max:255"
+            ]);
 
-        return response()->json(["data" => $category], Response::HTTP_CREATED);
+            $category = Category::create($validated);
+            return response()->json(["data" => $category], Response::HTTP_CREATED);
+        } catch (ValidationException $ex) {
+            return response()->json(["error" => $ex->errors()], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
