@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMessageRequest;
+use App\Http\Requests\UpdateMessageRequest;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -28,18 +30,10 @@ class MessageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateMessageRequest $request)
     {
-        try {
-            $validated = $request->validate([
-                "content" => "required|max:2000",
-                "post_id" => "required|numeric|exists:posts,id"
-            ]);
-            $message = Message::create($validated);
-            return response()->json(["data" => $message], Response::HTTP_CREATED);
-        } catch (ValidationException $ex) {
-            return response()->json(["error" => $ex->errors()], Response::HTTP_BAD_REQUEST);
-        }
+        $message = Message::create($request->validated());
+        return response()->json(["data" => $message], Response::HTTP_CREATED);
     }
 
     /**
@@ -59,9 +53,10 @@ class MessageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateMessageRequest $request, Message $message)
     {
-        //
+        $message->update($request->validated());
+        return response()->json(["data" => $message], Response::HTTP_ACCEPTED);
     }
 
     /**
