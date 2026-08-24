@@ -9,6 +9,7 @@ class Message extends Model
 {
     use HasFactory;
     protected $fillable = ["content", "post_id"];
+    protected $hidden = ["created_at", "updated_at"];
 
     public function post()
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 class MessageController extends Controller
@@ -29,8 +30,16 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        $message = Message::create($request->all());
-        return response()->json(["data" => $message], Response::HTTP_CREATED);
+        try {
+            $validated = $request->validate([
+                "content" => "required|max:2000",
+                "post_id" => "required|numeric|exists:posts,id"
+            ]);
+            $message = Message::create($validated);
+            return response()->json(["data" => $message], Response::HTTP_CREATED);
+        } catch (ValidationException $ex) {
+            return response()->json(["error" => $ex->errors()], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
