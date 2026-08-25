@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Like;
 use App\Models\Message;
 use App\Models\Post;
 use App\Models\User;
@@ -22,5 +23,6 @@ class DatabaseSeeder extends Seeder
         Category::factory(10)->create();
         Post::factory(10)->create();
         Message::factory(10)->create();
+        Like::factory(100)->create();
     }
 }
