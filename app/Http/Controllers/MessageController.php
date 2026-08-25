@@ -39,14 +39,8 @@ class MessageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Message $message)
     {
-        $message = Message::find($id);
-
-        if (is_null($message)) {
-            return response()->json(["error" => "Message not found!"], Response::HTTP_NOT_FOUND);
-        }
-
         return response()->json(["data" => $message]);
     }
 
