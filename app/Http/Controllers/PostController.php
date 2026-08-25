@@ -18,7 +18,7 @@ class PostController extends Controller
 
         $per_page = $request->query("per_page", 5);
         $page = $request->query("page", 0);
-        $offset = ($page * $per_page) - 1;
+        $offset = $page * $per_page;
 
         $posts = Post::skip($offset)
             ->take($per_page)
