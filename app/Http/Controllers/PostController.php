@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,24 +31,17 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreatePostRequest $request)
     {
-        $post = Post::create($request->all());
-
+        $post = Post::create($request->validated());
         return response()->json(["data" => $post], Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post)
     {
-        $post = Post::find($id);
-
-        if (is_null($post)) {
-            return response()->json(["error" => "Post not found!"], Response::HTTP_NOT_FOUND);
-        }
-
         return response()->json(["data" => $post]);
     }
 
@@ -54,17 +49,18 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $post->update($request->validated());
+        return response()->json(["data" => $post], Response::HTTP_ACCEPTED);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        Post::destroy($id);
+        $post->delete();
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

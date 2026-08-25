@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateCategoryRequest extends FormRequest
+class CreateCategoryRequest extends CustomFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

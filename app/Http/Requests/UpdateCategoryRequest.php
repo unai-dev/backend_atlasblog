@@ -9,7 +9,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Override;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateCategoryRequest extends FormRequest
+class UpdateCategoryRequest extends CustomFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
