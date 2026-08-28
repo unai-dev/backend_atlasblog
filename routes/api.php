@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MessageController;
@@ -16,3 +17,7 @@ Route::apiResource("/messages", MessageController::class);
 Route::apiResource("/posts", PostController::class);
 
 Route::apiResource("/likes", LikeController::class);
+
+
+Route::post("/register", [AuthController::class, "register"]);
+Route::post("/login", [AuthController::class, "login"])->name("login");
