@@ -51,6 +51,19 @@ class AuthController extends Controller
         }
     }
 
+    public function refresh()
+    {
+        try {
+            $token = JWTAuth::getToken();
+            $newToken = auth()->refresh();
+            JWTAuth::invalidate($token);
+
+            return response()->json(["token" => $newToken]);
+        } catch (JWTException $ex) {
+            return response()->json(["error" => $ex->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function who()
     {
         $user = auth()->user();
