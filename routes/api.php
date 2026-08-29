@@ -10,14 +10,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::get("/", fn() => ["message" => "AtlasBlog is running!"]);
 
-Route::apiResource("/categories", CategoryController::class);
-
-Route::apiResource("/messages", MessageController::class);
-
-Route::apiResource("/posts", PostController::class);
-
-Route::apiResource("/likes", LikeController::class);
-
-
 Route::post("/register", [AuthController::class, "register"]);
 Route::post("/login", [AuthController::class, "login"])->name("login");
+
+Route::middleware("jwt.auth")->group(function () {
+
+    Route::apiResource("/posts", PostController::class);
+
+    Route::apiResource("/likes", LikeController::class);
+
+    Route::apiResource("/categories", CategoryController::class);
+
+    Route::apiResource("/messages", MessageController::class);
+
+    Route::get("/who", [AuthController::class, "who"]);
+    Route::post("/logout", [AuthController::class, "logout"]);
+});

@@ -39,4 +39,21 @@ class AuthController extends Controller
             return response()->json(["error" => $ex->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function logout()
+    {
+        try {
+            $token = JWTAuth::getToken();
+            JWTAuth::invalidate($token);
+            return response()->json(["message" => "Succesful Logout"]);
+        } catch (JWTException $ex) {
+            return response()->json(["error" => $ex->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function who()
+    {
+        $user = auth()->user();
+        return response()->json(["data" => $user]);
+    }
 }
